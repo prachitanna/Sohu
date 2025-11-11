@@ -237,9 +237,12 @@ Thank you for being the safest place I’ve ever known, for choosing me again an
             // Update the DOM with the specific day's content
             if (content) {
                 // Main titles and text
-                countdownTitleEl.textContent = (dayIndex < 7) 
-                    ? `A countdown of love: ${daysLeft} ${daysLeft === 1 ? 'day' : 'days'} left!`
-                    : 'Our 8-Year Anniversary & Birthday Celebration!';
+                if (dayIndex < 8) {
+    countdownTitleEl.textContent = `A countdown of love: ${daysLeft} days to go`;
+} else {
+    countdownTitleEl.textContent = 'Birthday Celebration!';
+}
+
 
                 mainTitleText.textContent = content.title;
                 themeIcon.textContent = content.icon;
@@ -319,6 +322,7 @@ Thank you for being the safest place I’ve ever known, for choosing me again an
 </body>
 
 </html>
+
 
 
 
