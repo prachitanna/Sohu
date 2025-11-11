@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our 8-Year Countdown</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #65a30d; /* Lime Green */
+            --secondary-color: #f0fdf4; /* Light Mint */
+            --accent-color: #fde047; /* Yellow */
+            --text-color: #1e3a8a; /* Dark Blue */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--secondary-color);
+        }
+        /* Custom keyframes for fade-in effect */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 1s ease-out forwards;
+        }
+        .card-shadow {
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        .ghibli-style-image {
+            /* Simulating a soft, hand-drawn look */
+            background: #d1fae5;
+            border: 4px solid var(--primary-color);
+            border-radius: 9999px; /* Full circle */
+            box-shadow: 0 0 15px rgba(101, 163, 13, 0.6);
+            transition: transform 0.3s ease-in-out;
+            position: relative; /* For image placeholder text */
+        }
+        .ghibli-style-image:hover {
+            transform: scale(1.03) rotate(-1deg);
+        }
+        .day-counter {
+            font-size: 5rem; /* Large text for the day number */
+            line-height: 1;
+            color: var(--primary-color);
+            text-shadow: 2px 2px var(--text-color);
+        }
+        .secret-note-button {
+            transition: background-color 0.3s, transform 0.1s;
+        }
+        .secret-note-button:active {
+            transform: scale(0.98);
+        }
+
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+
+    <!-- Main Content Container -->
+    <div id="content-card" class="w-full max-w-xl bg-white rounded-3xl p-6 md:p-10 text-center card-shadow transition-all duration-500 transform scale-95 opacity-0">
+
+        <!-- Countdown Header -->
+        <p id="countdown-title" class="text-lg font-semibold text-gray-500 mb-2"></p>
+        <h1 id="main-title" class="text-4xl md:text-5xl font-extrabold mb-8 text-sky-800 flex items-center justify-center">
+            <span id="theme-icon" class="mr-3 text-4xl"></span>
+            <span id="main-title-text"></span>
+        </h1>
+
+        <!-- Image Placeholder (Replace with your actual Ghibli-style image URL) -->
+        <div class="flex justify-center mb-8">
+            <div id="image-container" class="ghibli-style-image w-64 h-64 md:w-80 md:h-80 flex items-center justify-center p-2">
+                <!-- SVG/Image Placeholder content added by script -->
+                <img id="daily-image" src="" alt="A memory of us" class="hidden w-full h-full object-cover rounded-full">
+            </div>
+        </div>
+
+        <!-- The Daily Message -->
+        <div class="text-left bg-gray-50 p-6 rounded-2xl border-l-8 border-lime-600">
+            <p id="daily-message" class="text-lg md:text-xl text-gray-700 leading-relaxed font-medium animate-fade-in"></p>
+        </div>
+        
+        <!-- Secret Note Section -->
+        <div class="mt-4 p-4 border border-lime-200 rounded-xl bg-lime-50 text-center">
+            <button id="secret-note-btn" class="secret-note-button w-full px-4 py-2 bg-lime-500 hover:bg-lime-600 text-white font-bold rounded-lg transition">
+                Click for a Tiny Surprise!
+            </button>
+            <p id="secret-note-text" class="text-lg font-semibold text-lime-800 mt-3 hidden animate-fade-in"></p>
+        </div>
+
+        <!-- Daily Song Player -->
+        <div class="mt-6">
+            <p class="text-sm text-gray-500 mb-2">Today's Soundtrack 🎶</p>
+            <audio id="daily-song-player" class="hidden"></audio>
+        </div>
+
+        <!-- Day Count -->
+        <div class="mt-8">
+             <span id="day-number" class="day-counter font-black"></span>
+             <span id="day-suffix" class="text-2xl font-bold text-lime-700"> / 8</span>
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const contentCard = document.getElementById('content-card');
+            const mainTitleText = document.getElementById('main-title-text');
+            const themeIcon = document.getElementById('theme-icon');
+            const dailyMessage = document.getElementById('daily-message');
+            const dailyImage = document.getElementById('daily-image');
+            const dayNumberEl = document.getElementById('day-number');
+            const countdownTitleEl = document.getElementById('countdown-title');
+            const imageContainer = document.getElementById('image-container');
+            const secretNoteBtn = document.getElementById('secret-note-btn');
+            const secretNoteText = document.getElementById('secret-note-text');
+            const dailySongPlayer = document.getElementById('daily-song-player');
+
+            // --- ALL 8 DAYS OF CONTENT (UPDATED with Song and Secret Note) ---
+            const countdownData = [
+                // Day 1 (Nov 10th | 7 days to go) - *** CONTENT UPDATED FOR EXAMPLE ***
+                {
+                    theme: "The First Spark",
+                    icon: "✨",
+                    title: "Grateful for You",
+                    message: "Eight years ago, something unbelievably lucky happened ❤️ I found you.
+And you know me… I overthink everything. Everything.
+But you? Loving you has been the only decision in my life that I never had to analyze, fear, or break apart.
+You walked in, and suddenly my heart knew what peace felt like; I knew that I had found my person!
+
+Thank you for being the safest place I’ve ever known, for choosing me again and again, and for making the world a softer place just by being in it. I’m grateful for you — today, tomorrow, and all the years ahead.",
+                    imagePlaceholder: "Photo from our first year.",
+                    imageSource: "https://docs.google.com/uc?export=view&id=1cN5D-PviPkzyEGZvhWl1zM_nB2Izs_bd", 
+                    audioSource: "https://docs.google.com/uc?export=download&id=16nTjmrWjT1jrg8oh9TB4aHHeApxXEn-x
+", 
+                    secretNote: "P.S. You've had my heart since day one."
+                },
+                // Day 2 (Nov 11th | 6 days to go) - *** PLACEHOLDERS REMAIN ***
+                {
+                    theme: "Eight Defining Qualities",
+                    icon: "💖",
+                    title: "The Heart of Who You Are",
+                    message: "Over 8 years, I've seen the depth of your character. Today, I'm celebrating eight things I love about you: your patience, your smarts, your big heart, your focus, your weird sense of humor, your kindness, your determination, and your amazing taste in partners! 😉",
+                    imagePlaceholder: "A photo that shows his smile or personality.",
+                    imageSource: "https://placehold.co/400x400/a7f3d0/065f46?text=Day+2+Photo", // *** REPLACE THIS URL ***
+                    audioSource: "YOUR_MP3_URL_FOR_DAY_2", // *** REPLACE THIS URL ***
+                    secretNote: "Your smile is my favorite thing in the world."
+                },
+                // Day 3 (Nov 12th | 6 days left)
+                {
+                    theme: "Our Comfort Zone",
+                    icon: "🏡",
+                    title: "Where I Belong",
+                    message: "Being with you feels like coming home. This picture reminds me that no matter where we are—on a busy trip or just on the couch—I feel completely safe, understood, and peaceful. After 8 years, you are my favorite kind of quiet.",
+                    imagePlaceholder: "A photo of you two relaxing/at home.",
+                    imageSource: "https://placehold.co/400x400/ccfbf1/065f46?text=Day+3+Photo", // *** REPLACE THIS URL ***
+                    audioSource: "YOUR_MP3_URL_FOR_DAY_3", // *** REPLACE THIS URL ***
+                    secretNote: "Let's stay in and order pizza tonight."
+                },
+                // Day 4 (Nov 13th | 5 days left)
+                {
+                    theme: "The Shared Hilarity",
+                    icon: "😂",
+                    title: "Only We Understand",
+                    message: "This photo! Every time I see it, I remember that one ridiculous inside joke. Thank you for filling my life with so much laughter over the last 8 years. You always know exactly how to make a bad day instantly better.",
+                    imagePlaceholder: "A silly, laughing, or funny memory photo.",
+                    imageSource: "https://placehold.co/400x400/6ee7b7/065f46?text=Day+4+Photo", // *** REPLACE THIS URL ***
+                    audioSource: "YOUR_MP3_URL_FOR_DAY_4", // *** REPLACE THIS URL ***
+                    secretNote: "You're the funniest person I know, hands down."
+                },
+                // Day 5 (Nov 14th | 4 days left)
+                {
+                    theme: "Strength & Support",
+                    icon: "💪",
+                    title: "The Pillars of Our Life",
+                    message: "It takes strength to build 8 years together. This picture represents a time when we leaned on each other and came out stronger. Thank you for your unwavering belief in me, especially when I didn't believe in myself. We're a great team.",
+                    imagePlaceholder: "A photo from a significant achievement/event.",
+                    imageSource: "https://placehold.co/400x400/34d399/065f46?text=Day+5+Photo", // *** REPLACE THIS URL ***
+                    audioSource: "YOUR_MP3_URL_FOR_DAY_5", // *** REPLACE THIS URL ***
+                    secretNote: "I'm so proud of everything you do."
+                },
+                // Day 6 (Nov 15th | 3 days left)
+                {
+                    theme: "Our Go-To Soundtrack",
+                    icon: "🎧",
+                    title: "The Vibe of Us",
+                    message: "Some songs just *feel* like our relationship. Today's picture reminds me of that music, that place, and that special feeling. Our lives have their own unique soundtrack, and you always pick the best beats. You're my favorite kind of melody.",
+                    imagePlaceholder: "A photo from a concert, car ride, or special location.",
+                    imageSource: "https://placehold.co/400x400/10b981/065f46?text=Day+6+Photo", // *** REPLACE THIS URL ***
+                    audioSource: "YOUR_MP3_URL_FOR_DAY_6", // *** REPLACE THIS URL ***
+                    secretNote: "Play this song on repeat today!"
+                },
+                // Day 7 (Nov 16th | 2 days left)
+                {
+                    theme: "Dreaming of Tomorrow",
+                    icon: "💫",
+                    title: "A View Ahead",
+                    message: "Just two more sleeps until your big day! Looking at this photo makes me excited for all the moments we haven't lived yet. Every day with you is a promise of new possibilities. Here’s to a future full of fun and shared dreams.",
+                    imagePlaceholder: "A newer photo, maybe from a scenic view.",
+                    imageSource: "https://placehold.co/400x400/059669/065f46?text=Day+7+Photo", // *** REPLACE THIS URL ***
+                    audioSource: "YOUR_MP3_URL_FOR_DAY_7", // *** REPLACE THIS URL ***
+                    secretNote: "Let's plan that big trip soon."
+                },
+                // Day 8 (Nov 17th | Birthday/Anniversary Day)
+                {
+                    theme: "The Celebration",
+                    icon: "🥳",
+                    title: "🎉 Happy Birthday, My Love! 🎉",
+                    message: "It's finally here! You are the best thing that has happened to me over the last 8 years, and I can't wait to spend forever celebrating you. Happy Birthday, my wonderful boyfriend! I love you more than words can say!",
+                    imagePlaceholder: "A very recent, special photo.",
+                    imageSource: "https://placehold.co/400x400/047857/065f46?text=Day+8+Photo", // *** REPLACE THIS URL ***
+                    audioSource: "YOUR_MP3_URL_FOR_DAY_8", // *** REPLACE THIS URL ***
+                    secretNote: "You are my absolute favorite person."
+                }
+            ];
+            // --- END OF CONTENT ---
+
+            function getParameterByName(name) {
+                name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+                const regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
+                const results = regex.exec(location.search);
+                return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+            }
+
+            // Get the 'day' parameter from the URL. Default to 1 (the first day of the countdown).
+            let dayIndex = parseInt(getParameterByName('day')) || 1;
+
+            // Ensure the day is within bounds (1 to 8)
+            if (dayIndex < 1 || dayIndex > 8 || isNaN(dayIndex)) {
+                dayIndex = 1; // Fallback to the first day
+            }
+
+            // The index in the array is 0-7, so we subtract 1 from the day number.
+            const content = countdownData[dayIndex - 1];
+            const daysLeft = 9 - dayIndex; // 9 - 1 = 8 (Day 1 of countdown), 9 - 8 = 1 (Birthday)
+
+            // Update the DOM with the specific day's content
+            if (content) {
+                // Main titles and text
+                countdownTitleEl.textContent = (dayIndex < 8) 
+                    ? `A countdown of love: ${daysLeft} ${daysLeft === 1 ? 'day' : 'days'} left!`
+                    : 'Our 8-Year Anniversary & Birthday Celebration!';
+
+                mainTitleText.textContent = content.title;
+                themeIcon.textContent = content.icon;
+                dailyMessage.innerHTML = content.message; 
+                
+                // Update the Day Counter
+                dayNumberEl.textContent = dayIndex;
+
+                // Update the Image
+                dailyImage.src = content.imageSource;
+                dailyImage.alt = content.imagePlaceholder;
+
+                // Update the Song
+                dailySongPlayer.src = content.audioSource;
+                dailySongPlayer.autoplay = false; // Prevent auto-play for better user experience
+
+                // Update the Secret Note
+                secretNoteText.textContent = content.secretNote;
+                secretNoteBtn.onclick = () => {
+    			// Reveal the secret note
+    			secretNoteText.classList.remove('hidden');
+    			secretNoteBtn.classList.add('hidden');
+
+    			// Start the music
+    			dailySongPlayer.currentTime = 14; // or any second you want to start from
+    			dailySongPlayer.play().catch(() => {
+        			console.log("Autoplay was blocked, but should play on next interaction.");
+    			});
+		};
+                // Ensure secret note is hidden on load
+                secretNoteText.classList.add('hidden');
+                secretNoteBtn.classList.remove('hidden');
+                
+                
+                // Show the image element if a real URL is present, otherwise show the SVG placeholder
+                if (content.imageSource.includes('placehold.co') || content.imageSource.length < 5) {
+                    // Show the heart icon placeholder
+                    imageContainer.innerHTML = `
+                        <p class="absolute text-sm text-lime-800 p-2 text-center">${content.imagePlaceholder}</p>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-24 h-24 text-lime-700 opacity-60">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.054-4.312 2.651-1.287-1.468-2.937-2.651-4.312-2.651C5.1 3.75 3 5.765 3 8.25c0 7.22 8.55 12 9 12h0c.45 0 9-4.78 9-12Z" />
+                        </svg>
+                    `;
+                } else {
+                    // Show the actual image
+                    imageContainer.innerHTML = ''; // Clear placeholder
+                    dailyImage.classList.remove('hidden');
+                }
+
+                // Add the card-level fade-in animation
+                setTimeout(() => {
+                    contentCard.classList.remove('opacity-0', 'scale-95');
+                    contentCard.classList.add('animate-fade-in');
+                }, 100);
+
+                // Update special styling for the final day
+                if (dayIndex === 8) {
+                    document.body.style.backgroundColor = 'var(--accent-color)'; // Yellow highlight
+                    const messageBox = document.querySelector('.border-l-8');
+                    if(messageBox) {
+                        messageBox.classList.add('border-8', 'border-red-500');
+                        messageBox.classList.remove('border-l-8', 'border-lime-600');
+                    }
+                }
+
+            } else {
+                mainTitleText.textContent = "Error: Invalid Day";
+                themeIcon.textContent = "❌";
+                dailyMessage.textContent = "Please check the URL parameter and ensure the day number is between 1 and 8.";
+                dayNumberEl.textContent = '?';
+                secretNoteBtn.classList.add('hidden');
+                dailySongPlayer.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
