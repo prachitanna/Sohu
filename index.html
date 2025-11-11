@@ -285,8 +285,9 @@ Thank you for being the safest place I’ve ever known, for choosing me again an
                     `;
                 } else {
                     // Show the actual image
-                    imageContainer.innerHTML = ''; // Clear placeholder
-                    dailyImage.classList.remove('hidden');
+			 		imageContainer.innerHTML = ''; // Clear placeholder
+ 					imageContainer.appendChild(dailyImage); // re-attach the <img> removed by innerHTML=''
+ 					dailyImage.classList.remove('hidden');
                 }
 
                 // Add the card-level fade-in animation
@@ -318,6 +319,7 @@ Thank you for being the safest place I’ve ever known, for choosing me again an
 </body>
 
 </html>
+
 
 
 
