@@ -219,6 +219,24 @@ Just see this pic, how easily I did that pose with you, that too with everyone a
                     audioSource: "https://github.com/prachitanna/Sohu/raw/refs/heads/main/Day8.mp3", // *** REPLACE THIS URL ***
                     secretNote: "You are my absolute favorite person."
                 }
+
+
+				// Extra Birthday Page (triggered by ?day=bday)
+				{
+				    theme: "Birthday Magic",
+				    icon: "🌌",
+				    title: "A Little Extra Love",
+				    message: `Tonight feels like the softest part of a dream — the kind where the world quiets down just to make space for you.
+				<br><br>
+				This is your bonus birthday page… because one celebration could never be enough for you. 
+				<br><br>
+				I hope this night wraps around you gently, the way your presence wraps calm around me. I hope you feel cherished, held, and endlessly loved — not just today but every day that follows.`,
+				    imagePlaceholder: "A special evening photo.",
+				    imageSource: "https://raw.githubusercontent.com/prachitanna/Sohu/main/DayExtra.jpg",
+				    audioSource: "https://github.com/prachitanna/Sohu/raw/refs/heads/main/DayExtra.mp3",
+				    secretNote: "Here's one last wish: may this year be the one where all your quiet hopes come true."
+				}
+
             ];
             // --- END OF CONTENT ---
 
@@ -230,10 +248,19 @@ Just see this pic, how easily I did that pose with you, that too with everyone a
             }
 
             // Get the 'day' parameter from the URL. Default to 1 (the first day of the countdown).
-            let dayIndex = parseInt(getParameterByName('day')) || 1;
+            let dayParam = getParameterByName('day');
+			let dayIndex;
+
+			// Check if it's the special bday page
+			if (dayParam === "bday") {
+			    dayIndex = 9; // the new entry at the end of countdownData
+			} else {
+			    dayIndex = parseInt(dayParam) || 1;
+			}
+
 
             // Ensure the day is within bounds (1 to 8)
-            if (dayIndex < 1 || dayIndex > 8 || isNaN(dayIndex)) {
+            if (dayIndex < 1 || dayIndex > 9 || isNaN(dayIndex)) {
                 dayIndex = 1; // Fallback to the first day
             }
 
@@ -329,6 +356,7 @@ Just see this pic, how easily I did that pose with you, that too with everyone a
 </body>
 
 </html>
+
 
 
 
