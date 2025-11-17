@@ -257,7 +257,7 @@ Just see this pic, how easily I did that pose with you, that too with everyone a
 			    dayIndex = parseInt(dayParam) || 1;
 			}
 
-
+			const isBonusBirthday = (dayParam === "bday");
             // Ensure the day is within bounds (1 to 8)
             if (dayIndex < 1 || dayIndex > 9 || isNaN(dayIndex)) {
                 dayIndex = 1; // Fallback to the first day
@@ -283,6 +283,16 @@ Just see this pic, how easily I did that pose with you, that too with everyone a
                 
                 // Update the Day Counter
                 dayNumberEl.textContent = dayIndex;
+
+				// Hide the counter on the bonus birthday page
+				if (isBonusBirthday) {
+				    dayNumberEl.classList.add('hidden');
+				    document.getElementById('day-suffix').classList.add('hidden');
+				} else {
+				    dayNumberEl.classList.remove('hidden');
+				    document.getElementById('day-suffix').classList.remove('hidden');
+				}
+
 
                 // Update the Image
                 dailyImage.src = content.imageSource;
@@ -355,6 +365,7 @@ Just see this pic, how easily I did that pose with you, that too with everyone a
 </body>
 
 </html>
+
 
 
 
